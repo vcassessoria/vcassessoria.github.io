@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#1B2A3B">
+<title>VC Assessoria — Victor Costa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ── Família Azul-ardósia ── */
+  --slate:       #1B2A3B;
+  --slate-mid:   #243447;
+  --slate-lt:    #2E4159;
+
+  /* ── Família Verde-esmeralda ── */
+  --emerald:     #2D7D6F;
+  --emerald-lt:  #3DA08F;
+  --emerald-pale:#E6F4F2;
+
+  /* ── Neutros ── */
+  --pearl:       #F5F7FA;
+  --steel:       #8FA3B8;
+
+  /* ── Âmbar executivo ── */
+  --amber:       #C9943A;
+  --amber-lt:    #E8BA6A;
+
+  /* ── Derivados de uso ── */
+  --white:       #FDFEFF;
+  --border:      rgba(45,125,111,.18);
+  --border-lt:   rgba(45,125,111,.30);
+
+  --radius:    14px;
+  --radius-sm: 10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--slate);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── GRAIN sutil ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ── GLOW topo ── */
+body::before {
+  content: '';
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(45,125,111,.10) 0%, transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 0 20px 72px;
+}
+
+/* ══════════════════════════════
+   HEADER
+══════════════════════════════ */
+.header {
+  padding: 52px 0 32px;
+  text-align: center;
+}
+
+.logo-ring {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 1.5px solid var(--emerald);
+  margin-bottom: 20px;
+  position: relative;
+}
+.logo-ring::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--slate-mid);
+  border: 1px solid rgba(45,125,111,.2);
+}
+.logo-letters {
+  position: relative;
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: var(--emerald-lt);
+  letter-spacing: .06em;
+}
+
+.eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .20em;
+  text-transform: uppercase;
+  color: var(--emerald-lt);
+  margin-bottom: 14px;
+}
+
+.headline {
+  font-family: 'DM Serif Display', serif;
+  font-size: 27px;
+  line-height: 1.2;
+  color: var(--white);
+  margin-bottom: 14px;
+  letter-spacing: -.01em;
+}
+.headline em {
+  font-style: italic;
+  color: var(--emerald-lt);
+}
+
+.subhead {
+  font-size: 14px;
+  color: var(--steel);
+  line-height: 1.65;
+  max-width: 295px;
+  margin: 0 auto 12px;
+}
+
+.local-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--steel);
+  letter-spacing: .03em;
+  margin-top: 4px;
+}
+.local-tag svg { width: 12px; height: 12px; color: var(--emerald-lt); }
+
+.rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--emerald) 30%, var(--emerald) 70%, transparent);
+  margin: 30px auto;
+  width: 50%;
+  opacity: .4;
+}
+
+/* ══════════════════════════════
+   CTA PRINCIPAL
+══════════════════════════════ */
+.cta-eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--steel);
+  margin-bottom: 10px;
+  padding-left: 2px;
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 22px;
+  background: var(--emerald);
+  border-radius: var(--radius);
+  text-decoration: none;
+  margin-bottom: 30px;
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .18s cubic-bezier(.34,1.4,.64,1), box-shadow .18s;
+  box-shadow: 0 6px 28px rgba(45,125,111,.28);
+}
+.btn-primary:active  { transform: scale(.98); }
+.btn-primary::after  {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--white);
+  opacity: 0;
+  transition: opacity .15s;
+}
+.btn-primary:hover::after { opacity: .06; }
+
+.bp-inner { position: relative; z-index: 1; }
+.bp-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--emerald-pale);
+  opacity: .8;
+  margin-bottom: 3px;
+}
+.bp-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  color: var(--white);
+  line-height: 1.15;
+}
+.bp-sub {
+  font-size: 12px;
+  color: rgba(230,244,242,.7);
+  margin-top: 3px;
+}
+
+.bp-arrow {
+  position: relative;
+  z-index: 1;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(27,42,59,.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(230,244,242,.2);
+}
+.bp-arrow svg { width: 18px; height: 18px; }
+
+/* ══════════════════════════════
+   SECTION HEADER
+══════════════════════════════ */
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 28px 0 12px;
+}
+.sec-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.sec-icon svg { width: 14px; height: 14px; }
+.si-em  { background: rgba(45,125,111,.22); }
+.si-amb { background: rgba(201,148,58,.18); }
+.si-sl  { background: rgba(143,163,184,.14); }
+
+.sec-title {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--steel);
+}
+
+/* ══════════════════════════════
+   SERVICE BUTTONS
+══════════════════════════════ */
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 4px;
+}
+
+.btn-svc {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 17px;
+  background: var(--slate-mid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .15s, border-color .15s, background .15s;
+}
+.btn-svc:hover  { transform: translateX(2px); border-color: var(--border-lt); background: var(--slate-lt); }
+.btn-svc:active { transform: scale(.99); }
+
+.svc-left  { display: flex; align-items: center; gap: 13px; flex: 1; min-width: 0; }
+
+.svc-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.svc-icon svg { width: 17px; height: 17px; }
+.ic-em   { background: rgba(45,125,111,.2); }
+.ic-amb  { background: rgba(201,148,58,.15); }
+.ic-sl   { background: rgba(143,163,184,.12); }
+
+.svc-copy { flex: 1; min-width: 0; }
+.svc-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white);
+  line-height: 1.25;
+  margin-bottom: 2px;
+}
+.svc-sub {
+  font-size: 11px;
+  color: var(--steel);
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevron { color: var(--emerald-lt); flex-shrink: 0; margin-left: 8px; opacity: .7; }
+
+/* ══════════════════════════════
+   SEPARADOR
+══════════════════════════════ */
+.sec-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-lt) 40%, var(--border-lt) 60%, transparent);
+  margin: 22px 0;
+}
+
+/* ══════════════════════════════
+   PROVA SOCIAL
+══════════════════════════════ */
+.proof {
+  background: var(--slate-mid);
+  border: 1px solid var(--border-lt);
+  border-radius: var(--radius);
+  padding: 22px 20px 20px;
+  margin: 28px 0 22px;
+  position: relative;
+  overflow: hidden;
+}
+.proof::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--emerald);
+  border-radius: 3px 0 0 3px;
+}
+.proof-mark {
+  font-family: 'DM Serif Display', serif;
+  font-size: 56px;
+  line-height: .65;
+  color: var(--emerald);
+  opacity: .3;
+  margin-bottom: 12px;
+  display: block;
+  margin-left: 8px;
+}
+.proof-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--emerald-pale);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  padding-left: 8px;
+}
+.proof-divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 12px;
+}
+.proof-from {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--steel);
+  padding-left: 8px;
+}
+.proof-role {
+  font-size: 11px;
+  color: var(--emerald-lt);
+  margin-top: 2px;
+  padding-left: 8px;
+}
+
+/* ══════════════════════════════
+   TRUST STRIP
+══════════════════════════════ */
+.trust {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin-bottom: 28px;
+}
+.trust-card {
+  background: var(--slate-mid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 10px;
+  text-align: center;
+}
+.trust-val {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  color: var(--emerald-lt);
+  line-height: 1.1;
+  margin-bottom: 5px;
+}
+.trust-lbl {
+  font-size: 10px;
+  color: var(--steel);
+  line-height: 1.35;
+  font-weight: 500;
+}
+
+/* ══════════════════════════════
+   FOOTER
+══════════════════════════════ */
+.footer {
+  text-align: center;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.footer-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 15px;
+  color: var(--emerald-pale);
+  margin-bottom: 5px;
+}
+.footer-desc {
+  font-size: 11px;
+  color: var(--steel);
+  letter-spacing: .04em;
+  line-height: 1.6;
+}
+
+/* ══════════════════════════════
+   ANIMAÇÕES
+══════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.a1 { animation: fadeUp .5s .00s ease both; }
+.a2 { animation: fadeUp .5s .07s ease both; }
+.a3 { animation: fadeUp .5s .14s ease both; }
+.a4 { animation: fadeUp .5s .21s ease both; }
+.a5 { animation: fadeUp .5s .28s ease both; }
+.a6 { animation: fadeUp .5s .35s ease both; }
+.a7 { animation: fadeUp .5s .42s ease both; }
+
+/* iOS safe area */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .page { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="header a1">
+    <div class="logo-ring">
+      <span class="logo-letters">VC</span>
+    </div>
+    <p class="eyebrow">Victor Costa · Assessoria Financeira</p>
+    <h1 class="headline">Transformamos números<br>em <em>decisões lucrativas</em></h1>
+    <p class="subhead">Seu negócio merece mais do que intuição — merece estratégia. Falamos a língua do dono, sem economês.</p>
+    <span class="local-tag">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Itajubá e Sul de Minas · Todo o Brasil
+    </span>
+    <div class="rule"></div>
+  </header>
+
+  <!-- ═══ CTA PRINCIPAL ═══ -->
+  <div class="a2">
+    <p class="cta-eyebrow">Comece por aqui</p>
+    <a class="btn-primary"
+       href="https://wa.me/5535984257353?text=Ol%C3%A1%2C+Victor%21+Vim+pelo+Instagram+e+gostaria+de+fazer+o+diagn%C3%B3stico+financeiro+gratuito+do+meu+neg%C3%B3cio."
+       target="_blank" rel="noopener">
+      <div class="bp-inner">
+        <div class="bp-tag">Gratuito · Sem compromisso</div>
+        <div class="bp-title">Diagnóstico Financeiro</div>
+        <div class="bp-sub">Descubra onde o seu dinheiro está indo</div>
+      </div>
+      <div class="bp-arrow">
+        <svg viewBox="0 0 18 18" fill="none" stroke="#E6F4F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3.75 9h10.5M9.75 4.5l4.5 4.5-4.5 4.5"/>
+        </svg>
+      </div>
+    </a>
+  </div>
+
+  <!-- ═══ PILAR 1 — SAÚDE FINANCEIRA ═══ -->
+  <div class="a3">
+    <div class="sec-head">
+      <div class="sec-icon si-em">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#3DA08F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+      </div>
+      <span class="sec-title">Saúde Financeira</span>
+    </div>
+
+    <div class="btn-group">
+      <a class="btn-svc"
+         href="https://wa.me/5535984257353?text=Ol%C3%A1%2C+Victor%21+Vim+pelo+Instagram+%E2%80%94+vendo+muito+mas+o+dinheiro+some.+Preciso+organizar+o+fluxo+de+caixa."
+         target="_blank" rel="noopener">
+        <div class="svc-left">
+          <div class="svc-icon ic-em">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3DA08F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>
+            </svg>
+          </div>
+          <div class="svc-copy">
+            <div class="svc-title">Pare de vender e não ver a cor do dinheiro</div>
+            <div class="svc-sub">Fluxo de caixa e capital de giro</div>
+          </div>
+        </div>
+        <svg class="chevron" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4l4 4-4 4"/></svg>
+      </a>
+
+      <a class="btn-svc"
+         href="https://wa.me/5535984257353?text=Ol%C3%A1%2C+Victor%21+Vim+pelo+Instagram+e+quero+saber+se+meu+neg%C3%B3cio+est%C3%A1+realmente+lucrando+ou+s%C3%B3+girando+dinheiro."
+         target="_blank" rel="noopener">
+        <div class="svc-left">
+          <div class="svc-icon ic-em">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3DA08F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+          </div>
+          <div class="svc-copy">
+            <div class="svc-title">Descubra se você lucra ou só gira dinheiro</div>
+            <div class="svc-sub">Análise de rentabilidade e margem real</div>
+          </div>
+        </div>
+        <svg class="chevron" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4l4 4-4 4"/></svg>
+      </a>
+
+      <a class="btn-svc"
+         href="https://wa.me/5535984257353?text=Ol%C3%A1%2C+Victor%21+Vim+pelo+Instagram+e+quero+identificar+onde+o+dinheiro+da+minha+empresa+est%C3%A1+vazando."
+         target="_blank" rel="noopener">
+        <div class="svc-left">
+          <div class="svc-icon ic-amb">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C9943A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/>
+            </svg>
+          </div>
+          <div class="svc-copy">
+            <div class="svc-title">Identifique onde o seu dinheiro está vazando</div>
+            <div class="svc-sub">Redução de custos e melhora de margem</div>
+          </div>
+        </div>
+        <svg class="chevron" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4l4 4-4 4"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="sec-divider"></div>
+
+  <!-- ═══ PILAR 2 — CRESCIMENTO E PROTEÇÃO ═══ -->
+  <div class="a4">
+    <div class="sec-head">
+      <div class="sec-icon si-amb">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#C9943A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <span class="sec-title">Crescimento e Proteção</span>
+    </div>
+
+    <div class="btn-group">
+      <a class="btn-svc"
+         href="https://wa.me/5535984257353?text=Ol%C3%A1%2C+Victor%21+Vim+pelo+Instagram+e+quero+saber+se+estou+pagando+mais+imposto+do+que+deveria."
+         target="_blank" rel="noopener">
+        <div class="svc-left">
+          <div class="svc-icon ic-amb">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C9943A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+          </div>
+          <div class="svc-copy">
+            <div class="svc-title">Pague só o imposto que você realmente deve</div>
+            <div class="svc-sub">Planejamento tributário e fiscal</div>
+          </div>
+        </div>
+        <svg class="chevron" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4l4 4-4 4"/></svg>
+      </a>
+
+      <a class="btn-svc"
+         href="https://wa.me/5535984257353?text=Ol%C3%A1%2C+Victor%21+Vim+pelo+Instagram+e+preciso+reestruturar+as+finan%C3%A7as+da+minha+empresa+antes+que+o+problema+vire+crise."
+         target="_blank" rel="noopener">
+        <div class="svc-left">
+          <div class="svc-icon ic-amb">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C9943A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+          </div>
+          <div class="svc-copy">
+            <div class="svc-title">Reestruture antes que o problema vire crise</div>
+            <div class="svc-sub">Reestruturação financeira e viabilidade</div>
+          </div>
+        </div>
+        <svg class="chevron" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4l4 4-4 4"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="sec-divider"></div>
+
+  <!-- ═══ PILAR 3 — GESTÃO ORÇAMENTÁRIA ═══ -->
+  <div class="a5">
+    <div class="sec-head">
+      <div class="sec-icon si-sl">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8FA3B8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+        </svg>
+      </div>
+      <span class="sec-title">Gestão Orçamentária</span>
+    </div>
+
+    <div class="btn-group">
+      <a class="btn-svc"
+         href="https://wa.me/5535984257353?text=Ol%C3%A1%2C+Victor%21+Vim+pelo+Instagram+e+quero+parar+de+ser+surpreendido+pelas+contas+%E2%80%94+preciso+de+previsibilidade+financeira."
+         target="_blank" rel="noopener">
+        <div class="svc-left">
+          <div class="svc-icon ic-em">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3DA08F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div class="svc-copy">
+            <div class="svc-title">Pare de ser surpreendido pelas contas</div>
+            <div class="svc-sub">Orçamento e projeção de caixa</div>
+          </div>
+        </div>
+        <svg class="chevron" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4l4 4-4 4"/></svg>
+      </a>
+
+      <a class="btn-svc"
+         href="https://wa.me/5535984257353?text=Ol%C3%A1%2C+Victor%21+Vim+pelo+Instagram+e+quero+saber+quais+%C3%A1reas+do+meu+neg%C3%B3cio+est%C3%A3o+gerando+e+consumindo+dinheiro."
+         target="_blank" rel="noopener">
+        <div class="svc-left">
+          <div class="svc-icon ic-em">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3DA08F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+            </svg>
+          </div>
+          <div class="svc-copy">
+            <div class="svc-title">Saiba o que gera e o que consome em cada área</div>
+            <div class="svc-sub">Centros de custo e controle por setor</div>
+          </div>
+        </div>
+        <svg class="chevron" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4l4 4-4 4"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- ═══ PROVA SOCIAL ═══ -->
+  <div class="proof a6">
+    <span class="proof-mark">"</span>
+    <p class="proof-text">Achei que meu negócio estava lucrando. Depois da análise do Victor, descobri que havia um custo oculto me sangrando há dois anos. Reorganizamos tudo em menos de 60 dias.</p>
+    <div class="proof-divider"></div>
+    <div class="proof-from">Cliente · Comércio varejista local</div>
+    <div class="proof-role">Itajubá · Sul de Minas Gerais</div>
+  </div>
+
+  <!-- ═══ TRUST STRIP ═══ -->
+  <div class="trust a6">
+    <div class="trust-card">
+      <div class="trust-val">PMEs</div>
+      <div class="trust-lbl">Pequenos e médios negócios</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-val">Sul<br>MG</div>
+      <div class="trust-lbl">Raiz local, alcance nacional</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-val">Adm.</div>
+      <div class="trust-lbl">Formação e prática de mercado</div>
+    </div>
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer a7">
+    <div class="footer-name">Victor Costa</div>
+    <div class="footer-desc">VC Assessoria e Treinamentos<br>Administrador · Consultor Financeiro e Tributário</div>
+  </footer>
+
+</div>
+</body>
+</html>
